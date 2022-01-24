@@ -1,0 +1,74 @@
+backend:
+  name: git-gateway
+  branch: master
+media_folder: public/media
+public_folder: img
+i18n:
+  structure: multiple_folders
+  locales: [en, it]
+  default_locale: en
+collections:
+  - name: settings
+    label: Settings
+    files:
+      - label: 'General'
+        name: general
+        file: content/settings/general.yml
+        fields:
+          - label: Brand name
+            name: brandName
+            widget: string
+
+          - label: Logo
+            name: logo
+            widget: image
+            required: false
+
+          - label: Base page title
+            name: basePageTitle
+            widget: string
+
+  - label: Navigation
+    i18n: true
+    name: navigation
+    folder: content/navigation
+    format: yml
+    delete: false
+    fields:
+      - { label: 'Title', name: title, widget: string }
+      - label: Links
+        name: links
+        i18n: true
+        label_singular: Link
+        widget: list
+        fields:
+          - label: Label
+            name: label
+            widget: string
+            i18n: true
+
+          - label: Page
+            name: page
+            widget: relation
+            collection: pages
+            required: false
+            value_field: '{{slug}}'
+            search_fields: ['name']
+
+          - label: Link
+            name: href
+            widget: string
+            required: false
+
+  - name: pages
+    label: Pages
+    label_singular: Page
+    i18n: true
+    folder: content/pages
+    identifier_field: name
+    create: true
+    fields:
+      - { label: 'Name', name: name, widget: string }
+      - { label: 'Title', name: title, widget: string, i18n: true }
+      - { label: 'Publish Date', name: created, widget: datetime }
+      - { label: 'Body', name: body, widget: markdown, i18n: true }
